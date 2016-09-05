@@ -6,3 +6,5 @@
 /config.status
 /configure
 /obj/
+/autom4te.cache/
+
