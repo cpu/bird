@@ -658,7 +658,7 @@ CF_CLI(EVAL, term, <expr>, [[Evaluate an expression]])
 { cmd_eval($2); } ;
 
 CF_CLI_HELP(ECHO, ..., [[Control echoing of log messages]])
-CF_CLI(ECHO, echo_mask echo_size, (all | off | \"{\" <flag1> [, <flag2> ...] \"}\") [<buffer-size>], [[Control echoing of log messages \n  Available flags: debug, trace, info, remote, warning, error, auth]]) {
+CF_CLI(ECHO, echo_mask echo_size, (all | off | {<flag1> [, <flag2> ...]}) [<buffer-size>], [[Control echoing of log messages, available flags: debug, trace, info, remote, warning, error, auth]]) {
   cli_set_log_echo(this_cli, $2, $3);
   cli_msg(0, "");
 } ;
@@ -691,11 +691,11 @@ CF_CLI(RELOAD OUT, proto_patt, <protocol> | \"<pattern>\" | all, [[Reload protoc
 { proto_apply_cmd($3, proto_cmd_reload, 1, CMD_RELOAD_OUT); } ;
 
 CF_CLI_HELP(DEBUG, ..., [[Control protocol debugging via BIRD logs]])
-CF_CLI(DEBUG, proto_patt debug_mask, (<protocol> | \"<pattern>\" | all) (all | off | \"{\" <flag1> [, <flag2> ...] \"}\"), [[Control protocol debugging via BIRD logs \n  Available flags: states, routes, filters, interfaces, events, packets]])
+CF_CLI(DEBUG, proto_patt debug_mask, (<protocol> | \"<pattern>\" | all) (all | off | {<flag1> [, <flag2> ...]}), [[Control protocol debugging via BIRD logs, available flags: states, routes, filters, interfaces, events, packets]])
 { proto_apply_cmd($2, proto_cmd_debug, 1, $3); } ;
 
 CF_CLI_HELP(MRTDUMP, ..., [[Control protocol debugging via MRTdump files]])
-CF_CLI(MRTDUMP, proto_patt mrtdump_mask, (<protocol> | \"<pattern>\" | all) (all | off | \"{\" <flag1> [, <flag2> ...] \"}\"), [[Control protocol debugging via MRTdump format \n  Available flags: states, messages]])
+CF_CLI(MRTDUMP, proto_patt mrtdump_mask, (<protocol> | \"<pattern>\" | all) (all | off | {<flag1> [, <flag2> ...]}), [[Control protocol debugging via MRTdump format, available flags: states, messages]])
 { proto_apply_cmd($2, proto_cmd_mrtdump, 1, $3); } ;
 
 CF_CLI(RESTRICT,,,[[Restrict current CLI session to safe commands]])
