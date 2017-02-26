@@ -115,6 +115,8 @@ struct bgp_conn {
   unsigned hold_time, keepalive_time;	/* Times calculated from my and neighbor's requirements */
 };
 
+#define BGP_AFL_FUZZ_BUFF_SIZE 5120
+
 struct bgp_proto {
   struct proto p;
   struct bgp_config *cf;		/* Shortcut to BGP configuration */
@@ -161,6 +163,7 @@ struct bgp_proto {
   unsigned mp_reach_len, mp_unreach_len;
   ip_addr local_link;			/* Link-level version of source_addr */
 #endif
+  char *fuzzBuff;			/* Used for AFL fuzzing */
 };
 
 struct bgp_prefix {

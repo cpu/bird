@@ -1280,6 +1280,7 @@ bgp_init(struct proto_config *C)
   p->rs_client = c->rs_client;
   p->rr_client = c->rr_client;
   p->igp_table = get_igp_table(c);
+  p->fuzzBuff = xmalloc(BGP_AFL_FUZZ_BUFF_SIZE);
 
   return P;
 }

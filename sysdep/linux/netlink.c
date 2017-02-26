@@ -831,11 +831,14 @@ nl_send_route(struct krt_proto *p, rte *e, struct ea_list *eattrs, int new)
   eattr *ea;
   net *net = e->net;
   rta *a = e->attrs;
+
   struct {
     struct nlmsghdr h;
     struct rtmsg r;
-    char buf[128 + KRT_METRICS_MAX*8 + nh_bufsize(a->nexthops)];
+    char *buff;
   } r;
+
+  r.buff = calloc(128 + KRT_METRICS_MAX*8 + nh_bufsize(a->nexthops), sizeof(char));
 
   DBG("nl_send_route(%I/%d,new=%d)\n", net->n.prefix, net->n.pxlen, new);
 

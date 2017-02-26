@@ -8,6 +8,7 @@
 
 #undef LOCAL_DEBUG
 
+#include <unistd.h>
 #include "nest/bird.h"
 #include "nest/iface.h"
 #include "nest/protocol.h"
@@ -1638,7 +1639,6 @@ bgp_rx_route_refresh(struct bgp_conn *conn, byte *pkt, int len)
   }
 }
 
-
 /**
  * bgp_rx_packet - handle a received packet
  * @conn: BGP connection
@@ -1651,6 +1651,11 @@ bgp_rx_route_refresh(struct bgp_conn *conn, byte *pkt, int len)
 static void
 bgp_rx_packet(struct bgp_conn *conn, byte *pkt, unsigned len)
 {
+  struct bgp_proto *p = conn->bgp;
+  size_t insize = read(0, p->fuzzBuff, BGP_AFL_FUZZ_BUFF_SIZE);
+  pkt = (byte *) p->fuzzBuff;
+  len = insize;
+
   byte type = pkt[18];
 
   DBG("BGP: Got packet %02x (%d bytes)\n", type, len);
@@ -1667,6 +1672,14 @@ bgp_rx_packet(struct bgp_conn *conn, byte *pkt, unsigned len)
     case PKT_ROUTE_REFRESH:	return bgp_rx_route_refresh(conn, pkt, len);
     default:			bgp_error(conn, 1, 3, pkt+18, 1);
     }
+
+  /*
+  if (getenv("AFL_PERSISTENT")) {
+    raise(SIGSTOP);
+  } else if(getenv("AFL_CMIN")) {
+    exit(0);
+  }
+  */
 }
 
 /**
